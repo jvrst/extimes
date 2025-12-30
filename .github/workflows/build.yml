@@ -6,6 +6,9 @@ on:
   pull_request:
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ${{ matrix.os }}
@@ -20,18 +23,26 @@ jobs:
             artifact: extimes-darwin-arm64
             goos: darwin
             goarch: arm64
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
           go-version: "1.22"
+
       - name: Build binary
         run: |
           mkdir -p dist
-          GOOS=${{ matrix.goos }} GOARCH=${{ matrix.goarch }} go build -o dist/extimes .
-      - name: Upload to release
+          GOOS=${{ matrix.goos }} GOARCH=${{ matrix.goarch }} \
+          go build -o dist/extimes .
+
+      - name: Create / update release
         uses: softprops/action-gh-release@v2
         with:
-          files: dist/extimes/**
+          tag_name: latest
+          name: Latest build
+          prerelease: false
+          files: dist/extimes
