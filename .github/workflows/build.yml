@@ -19,7 +19,7 @@ jobs:
             artifact: extimes-linux-amd64
             goos: linux
             goarch: amd64
-          - os: macos-latest
+          - os: ubuntu-latest
             artifact: extimes-darwin-arm64
             goos: darwin
             goarch: arm64
