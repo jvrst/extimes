@@ -37,12 +37,11 @@ jobs:
         run: |
           mkdir -p dist
           GOOS=${{ matrix.goos }} GOARCH=${{ matrix.goarch }} \
-          go build -o dist/extimes .
+          go build -o dist/extimes-${{ matrix.goos }}-${{ matrix.goarch }} .
 
       - name: Create / update release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: latest
           name: Latest build
-          prerelease: false
-          files: dist/extimes
+          files: dist/*
